@@ -1,4 +1,5 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from '../../users/entities/user.entity';
 
 export enum AlarmWeekdays {
   MONDAY = 'monday',
@@ -36,6 +37,6 @@ export class Alarm {
   @Column('boolean', { default: true })
   active: boolean;
 
-  @OneToMany((type) => Alarm, (alarm) => alarm.userId)
-  alarms: Alarm[];
+  @OneToOne((type) => User, (alarm: Alarm) => alarm.userId)
+  user: User;
 }

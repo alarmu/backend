@@ -17,6 +17,7 @@ import { SmsRuModule } from '../smsru/smsru.module';
       }),
       inject: [ConfigService],
     }),
+    ConfigModule,
     SmsRuModule,
   ],
   providers: [AuthService, SmsRuService],

@@ -2,8 +2,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Alarm } from '../../alarms/entities/alarm.entity';
 
 @Entity()
 export class User {
@@ -26,4 +28,7 @@ export class User {
     nullable: true,
   })
   lastAuthAttemptTime: Date | null = null;
+
+  @OneToMany((type) => Alarm, (alarm) => alarm.userId)
+  alarms: Alarm[];
 }

@@ -14,6 +14,10 @@ export class AlarmsService {
     return this.alarmsRepository.create(createAlarmDto);
   }
 
+  findAllForTime(time: string): Promise<Alarm[]> {
+    return this.alarmsRepository.findBy({ time: time });
+  }
+
   findAll(userId: string): Promise<Alarm[]> {
     return this.alarmsRepository.findBy({ userId: userId });
   }

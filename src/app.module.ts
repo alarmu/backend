@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import typeorm from './config/typeorm';
 import sms_ru from './config/sms_ru';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import sms_ru from './config/sms_ru';
         configService.get('typeorm'),
     }),
     AuthModule,
+    ScheduleModule.forRoot(),
     /*TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
