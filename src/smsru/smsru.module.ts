@@ -6,5 +6,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
   imports: [HttpModule, ConfigModule],
   providers: [SmsRuService, ConfigService],
+  exports: [SmsRuService, ConfigService],
 })
 export class SmsRuModule {}

@@ -12,23 +12,24 @@ export class SmsRuService {
     private readonly configService: ConfigService,
   ) {}
 
-  async call(phone: string, ip: string = '-1'): Promise<boolean> {
+  async call(phone: string, ip: string = '-1'): Promise<string> {
     return this.httpService.axiosRef
-      .post('https://sms.ru/code/call', {
-        phone,
-        ip,
-        api_id: this.configService.get('api_id'),
+      .get('https://sms.ru/code/call', {
+        params: {
+          phone,
+          ip,
+          api_id: this.configService.get('sms_ru.api_id'),
+        },
       })
       .then((res) => res.data.json())
       .then((res) => {
         if (res['status'] !== SMS_RU_STATUS_OK) {
           throw res['status_text'];
         }
-        return true;
+        return res['code'];
       })
       .catch((err) => {
         this.logger.log(err.message);
-        return false;
       });
   }
 }

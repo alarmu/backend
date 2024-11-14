@@ -14,17 +14,20 @@ import { SmsRuService } from '../smsru/smsRu.service';
 @Controller('auth')
 export class AuthController {
   constructor(
-    private authService: AuthService,
     private smsRuService: SmsRuService,
+    private authService: AuthService,
   ) {}
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async signIn(@Body() signInDto: SignInDto, @Ip() ip: string) {
+  async signIn(@Body() signInDto: SignInDto) {
     const phoneNumber = parsePhoneNumber(signInDto.phone).format('E.164');
 
     if (!signInDto.code) {
-      await this.smsRuService.call(phoneNumber, ip);
+      const code = await this.smsRuService.call(phoneNumber);
+
+      await this.authService.setAuthCode(phoneNumber, code);
+
       return {
         success: true,
       };
