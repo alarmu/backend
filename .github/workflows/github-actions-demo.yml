@@ -29,4 +29,5 @@ jobs:
               source ~/.nvm/nvm.sh
               cd /home/c94618/api.alarmu.ru/app && npm i
               cd /home/c94618/api.alarmu.ru/app && npm run build
+              cd /home/c94618/api.alarmu.ru/app && npm run migration:run
               cd /home/c94618/api.alarmu.ru/ && touch reload

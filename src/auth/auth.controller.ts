@@ -4,7 +4,7 @@ import {
   Post,
   HttpCode,
   HttpStatus,
-  Ip,
+  Ip, Logger,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/sign-in-dto';
@@ -13,6 +13,7 @@ import { SmsRuService } from '../smsru/smsRu.service';
 
 @Controller('auth')
 export class AuthController {
+  private readonly logger = new Logger(SmsRuService.name);
   constructor(
     private smsRuService: SmsRuService,
     private authService: AuthService,
@@ -24,13 +25,21 @@ export class AuthController {
     const phoneNumber = parsePhoneNumber(signInDto.phone).format('E.164');
 
     if (!signInDto.code) {
-      const code = await this.smsRuService.call(phoneNumber);
+      return await this.smsRuService
+        .call(phoneNumber)
+        .then(async (code) => {
+          await this.authService.setAuthCode(phoneNumber, code);
 
-      await this.authService.setAuthCode(phoneNumber, code);
-
-      return {
-        success: true,
-      };
+          return {
+            success: true,
+          };
+        })
+        .catch((err) => {
+          this.logger.log('SignIn failed: ', err);
+          return {
+            success: false,
+          };
+        });
     }
 
     return this.authService.signIn(phoneNumber, signInDto.code);
