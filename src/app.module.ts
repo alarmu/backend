@@ -3,6 +3,7 @@ import { AlarmsModule } from './alarms/alarms.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import app from './common/config/app';
 import typeorm from './common/config/typeorm';
 import sms_ru from './common/config/sms_ru';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -20,7 +21,7 @@ import { SmsRuModule } from './smsru/smsru.module';
     ConfigModule.forRoot({
       envFilePath: ['.env.local', '.env'],
       isGlobal: true,
-      load: [typeorm, sms_ru],
+      load: [app, typeorm, sms_ru],
     }),
     ScheduleModule.forRoot(),
     SmsRuModule,
