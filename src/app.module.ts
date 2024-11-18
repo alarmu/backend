@@ -11,18 +11,18 @@ import { SmsRuModule } from './smsru/smsru.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) =>
-        configService.get('typeorm'),
-    }),
-    AlarmsModule,
-    AuthModule,
     ConfigModule.forRoot({
       envFilePath: ['.env.local', '.env'],
       isGlobal: true,
       load: [app, typeorm, sms_ru],
     }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => config.get('typeorm'),
+    }),
+    AlarmsModule,
+    AuthModule,
     ScheduleModule.forRoot(),
     SmsRuModule,
   ],
